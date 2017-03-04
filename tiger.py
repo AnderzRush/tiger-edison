@@ -129,20 +129,22 @@ class Muzzle:
         self.up.write(0)
         self.down(1)
 
-    def stop(self)
+    def stop(self):
         self.up.write(0)
         self.down.write(0)
 
 class Cannon:
     '''Object representing the tank cannon'''
-    def __init__(self, callback=self.__default_callback):
+    def __init__(self, callback=None):
+        if callback == None:
+            callback = self.__default_callback
         self.callback = callback
         self.fire = mraa.Gpio(CFG.CANNON_FIRE_GPIO_PIN)
         self.fire.dir(mraa.DIR_OUT)
         self.fire.write(0)
         self.feedback = mraa.Gpio(CFG.CANNON_SWITCH_GPIO_PIN)
         self.feedback.dir(mraa.DIR_IN)
-        self.feedback(mraa.EDGE_RISING, self.__isr_routine, self.feedback)
+        self.feedback.isr(mraa.EDGE_RISING, self.__isr_routine, self.feedback)
 
     def __default_callback(self):
         self.abort()
