@@ -27,9 +27,6 @@ class Tank:
         self.lights = Lights()
         self.commander = Commander()
 
-    def fire(self):
-        pass
-
 class Propulsion:
     '''Object representing the track pair block'''
     def __init__(self):
